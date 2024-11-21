@@ -1,7 +1,7 @@
-import { v4 as uuidv4 } from 'uuid';
 import { StateCreator } from 'zustand';
 
 import { ChatSlice } from './chat.slice';
+import { generateGUID } from '~/utils/general.utils';
 
 interface AuthState {
   id: string | undefined;
@@ -21,5 +21,6 @@ const initialState = {
 
 export const createAuthSlice: StateCreator<AuthSlice & ChatSlice, [], [], AuthSlice> = (set) => ({
   ...initialState,
-  setAuthSession: (username: string) => set({ id: uuidv4(), username }),
+  setAuthSession: (username: string) =>
+    set((state) => ({ ...state, id: generateGUID(), username })),
 });

@@ -1,25 +1,35 @@
-import { v4 as uuidv4 } from 'uuid';
 import { StateCreator } from 'zustand';
 
 import { AuthSlice } from './auth.slice';
 
+import { Message } from '~/types';
+import { generateGUID } from '~/utils';
+
 interface ChatState {
-  id: string | undefined;
-  username: string | undefined;
+  messages: Message[];
 }
 
 interface ChatMethods {
-  setChatSession: (username: string) => void;
+  appendMessage: (message: Message) => void;
 }
 
 export type ChatSlice = ChatState & ChatMethods;
 
 const initialState = {
-  id: undefined,
-  username: undefined,
+  messages: [],
 } satisfies ChatState;
 
 export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSlice> = (set) => ({
   ...initialState,
-  setChatSession: (username: string) => set({ id: uuidv4(), username }),
+  appendMessage: (message) =>
+    set((state) => ({
+      messages: [
+        ...state.messages,
+        {
+          ...message,
+          id: message.id || generateGUID(),
+          date: message.date || new Date(),
+        },
+      ],
+    })),
 });
