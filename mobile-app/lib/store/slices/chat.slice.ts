@@ -12,6 +12,8 @@ interface ChatState {
 
 interface ChatMethods {
   appendMessage: (message: Message) => void;
+  getRoom: (id: string) => Room | undefined;
+  getMessagesByRoom: (id: string) => Message[];
 }
 
 export type ChatSlice = ChatState & ChatMethods;
@@ -34,9 +36,22 @@ const initialState = {
   messages: [],
 } satisfies ChatState;
 
-export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSlice> = (set) => ({
+export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSlice> = (
+  set,
+  get
+) => ({
   ...initialState,
   setupRooms: (rooms: Room[]) => set({ rooms }),
+  getRoom: (id) => {
+    const rooms = get().rooms;
+    return rooms.find((room) => room.id === id);
+  },
+  getMessagesByRoom: (id) => {
+    const messages = get().messages;
+    return messages
+      .filter((message) => message.roomId === id)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  },
   appendMessage: (message) =>
     set((state) => ({
       messages: [

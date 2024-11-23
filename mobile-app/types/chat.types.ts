@@ -9,4 +9,5 @@ export type Message = {
   userId: string;
   message: string;
   date: Date;
+  roomId?: string;
 };

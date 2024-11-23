@@ -21,7 +21,10 @@ const initialState = {
   username: undefined,
 } satisfies AuthState;
 
-export const createAuthSlice: StateCreator<AuthSlice & ChatSlice, [], [], AuthSlice> = (set) => ({
+export const createAuthSlice: StateCreator<AuthSlice & ChatSlice, [], [], AuthSlice> = (
+  set,
+  get
+) => ({
   ...initialState,
   resetSession: () => set(initialState),
   setAuthSession: (username: string) =>
