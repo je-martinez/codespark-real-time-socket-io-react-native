@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { Button, FlatList, View } from 'react-native';
 
 import { RoomItem } from './RoomItem';
 
@@ -8,10 +8,26 @@ import { Room } from '~/types';
 
 export const RoomList = () => {
   const rooms = useAppStore((store) => store.rooms);
+  const resetSession = useAppStore((store) => store.resetSession);
 
   const renderPostItem = useCallback(({ item }: { item: Room }) => {
     return <RoomItem room={item} />;
   }, []);
 
-  return <FlatList data={rooms} keyExtractor={(item) => item.id} renderItem={renderPostItem} />;
+  const renderHeader = useCallback(() => {
+    return (
+      <View className="flex flex-row items-center justify-end pb-4">
+        <Button onPress={resetSession} title="Logout" />
+      </View>
+    );
+  }, []);
+
+  return (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      data={rooms}
+      keyExtractor={(item) => item.id}
+      renderItem={renderPostItem}
+    />
+  );
 };

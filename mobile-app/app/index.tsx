@@ -1,11 +1,9 @@
-import { Link, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 
 import { EnterUsername, RoomList } from '~/components';
-import { Button } from '~/components/Button';
 import { Container } from '~/components/Container';
-import { ScreenContent } from '~/components/ScreenContent';
 import { useAppStore } from '~/lib/store';
 
 export default function Home() {
