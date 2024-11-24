@@ -1,7 +1,5 @@
-import { Elysia } from "elysia";
+import { server } from './api/server';
 
-const app = new Elysia().get("/", () => "Hello Elysia").listen(3000);
-
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`
-);
+server.listen(3000, () => {
+  console.log('Server is listening on port 3000');
+});
