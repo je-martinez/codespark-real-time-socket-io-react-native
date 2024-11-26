@@ -30,6 +30,7 @@ COPY --from=prerelease /usr/src/app/dist dist
 COPY --from=prerelease /usr/src/app/package.json package.json
 
 USER bun
+ENV PORT=3000
 EXPOSE 3000/tcp 
 
 ENTRYPOINT [ "bun", "run", "start" ]
