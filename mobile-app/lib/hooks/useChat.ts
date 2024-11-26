@@ -4,16 +4,27 @@ import useSocket from './useSocket';
 export default function useChat() {
   const rooms = useAppStore((state) => state.rooms);
   const appendNewMessage = useAppStore((state) => state.appendMessage);
+  const addMessages = useAppStore((state) => state.addMessages);
   const { socket } = useSocket();
 
   const joinAllRooms = () => {
     rooms.forEach((room) => {
       socket?.emit('join_room', room.id);
+      fetchRoom(room.id);
     });
 
     socket?.on('message', (message) => {
       appendNewMessage(message);
     });
+  };
+
+  const fetchRoom = async (roomId: string) => {
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/room/${roomId}`, {
+      method: 'GET',
+    });
+
+    const room = await response.json();
+    addMessages(room.messages);
   };
 
   const leaveAllRooms = () => {
