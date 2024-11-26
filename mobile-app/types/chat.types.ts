@@ -7,6 +7,6 @@ export type Message = {
   id: string;
   user: string;
   message: string;
-  date: Date;
+  timestamp: number;
   roomId: string;
 };

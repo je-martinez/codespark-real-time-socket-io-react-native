@@ -3,7 +3,6 @@ import { StateCreator } from 'zustand';
 import { AuthSlice } from './auth.slice';
 
 import { Message, Room } from '~/types';
-import { generateGUID } from '~/utils';
 
 interface ChatState {
   rooms: Room[];
@@ -56,19 +55,14 @@ export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSl
   },
   getMessagesByRoom: (id) => {
     const messages = get().messages;
-    return messages
-      .filter((message) => message.roomId === id)
-      .sort((a, b) => a.date.getTime() - b.date.getTime());
+    return messages.filter((message) => message.roomId === id);
   },
   appendMessage: (message) =>
-    set((state) => ({
-      messages: [
-        ...state.messages,
-        {
-          ...message,
-          id: message.id || generateGUID(),
-          date: message.date || new Date(),
-        },
-      ],
-    })),
+    set((state) => {
+      const messages = state.messages;
+      return {
+        ...state,
+        messages: [...messages, message],
+      };
+    }),
 });
