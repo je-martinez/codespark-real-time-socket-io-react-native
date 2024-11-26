@@ -5,9 +5,8 @@ export interface Room {
 
 export type Message = {
   id: string;
-  username: string;
-  userId: string;
+  user: string;
   message: string;
   date: Date;
-  roomId?: string;
+  roomId: string;
 };
