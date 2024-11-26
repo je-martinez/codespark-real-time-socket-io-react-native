@@ -19,7 +19,7 @@ export default function useChat() {
   };
 
   const fetchRoom = async (roomId: string) => {
-    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/room/${roomId}`, {
+    const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/rooms/${roomId}`, {
       method: 'GET',
     });
 
