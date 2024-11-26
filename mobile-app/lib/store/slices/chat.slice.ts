@@ -21,16 +21,24 @@ export type ChatSlice = ChatState & ChatMethods;
 const initialState = {
   rooms: [
     {
-      id: '1',
+      id: 'room1',
       name: 'Room 1',
     },
     {
-      id: '2',
+      id: 'room2',
       name: 'Room 2',
     },
     {
-      id: '3',
+      id: 'room3',
       name: 'Room 3',
+    },
+    {
+      id: 'room4',
+      name: 'Room 4',
+    },
+    {
+      id: 'room5',
+      name: 'Room 5',
     },
   ],
   messages: [],

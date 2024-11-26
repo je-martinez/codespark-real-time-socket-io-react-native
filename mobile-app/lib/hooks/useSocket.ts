@@ -7,7 +7,7 @@ export default function useSocket() {
   const { socket, setSocket } = useContext(SocketContext);
   const [isConnected, seIsConnected] = useState<boolean>(false);
 
-  const init = () => {
+  const init = (username?: string) => {
     const socket = io(process.env.EXPO_PUBLIC_API_URL, {
       autoConnect: false,
     });
@@ -16,6 +16,7 @@ export default function useSocket() {
 
     socket.on('connect', () => {
       seIsConnected(true);
+      socket.emit('setup_name', username);
     });
 
     socket.on('disconnect', () => {

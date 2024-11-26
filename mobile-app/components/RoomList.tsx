@@ -13,13 +13,14 @@ export const RoomList = () => {
   const rooms = useAppStore((store) => store.rooms);
   const resetSession = useAppStore((store) => store.resetSession);
   const { init, isConnected, disconnect } = useSocket();
+  const username = useAppStore((store) => store.username);
 
   const renderPostItem = useCallback(({ item }: { item: Room }) => {
     return <RoomItem room={item} />;
   }, []);
 
   useEffect(() => {
-    init();
+    init(username);
     return () => {
       disconnect();
     };
