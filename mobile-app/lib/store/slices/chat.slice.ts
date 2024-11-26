@@ -11,6 +11,7 @@ interface ChatState {
 
 interface ChatMethods {
   appendMessage: (message: Message) => void;
+  addMessages: (messages: Message[]) => void;
   getRoom: (id: string) => Room | undefined;
   getMessagesByRoom: (id: string) => Message[];
 }
@@ -63,6 +64,13 @@ export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSl
       return {
         ...state,
         messages: [...messages, message],
+      };
+    }),
+  addMessages: (messages) =>
+    set((state) => {
+      return {
+        ...state,
+        messages,
       };
     }),
 });
