@@ -9,6 +9,19 @@ export const registerEndpoints = (app: Express) => {
     });
   });
 
+  app.get('/api/rooms/:id', (req: Request, res: Response) => {
+    const room = rooms.find((r) => r.id === req.params.id);
+
+    if (!room) {
+      res.status(404).send({
+        message: "Room not found",
+      });
+      return;
+    }
+
+    res.send(room);
+  });
+
   app.delete("/api/reset", (req: Request, res: Response) => {
     const apiKey = req.headers["x-api-key"];
 
