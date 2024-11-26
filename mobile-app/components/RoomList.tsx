@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+'use client';
+import React, { useCallback, useEffect } from 'react';
 import { Button, FlatList, View } from 'react-native';
 
 import { RoomItem } from './RoomItem';
@@ -11,10 +12,17 @@ import { Room } from '~/types';
 export const RoomList = () => {
   const rooms = useAppStore((store) => store.rooms);
   const resetSession = useAppStore((store) => store.resetSession);
-  const { isConnected } = useSocket();
+  const { init, isConnected, disconnect } = useSocket();
 
   const renderPostItem = useCallback(({ item }: { item: Room }) => {
     return <RoomItem room={item} />;
+  }, []);
+
+  useEffect(() => {
+    init();
+    return () => {
+      disconnect();
+    };
   }, []);
 
   const renderHeader = useCallback(() => {
@@ -28,7 +36,7 @@ export const RoomList = () => {
         </View>
       </View>
     );
-  }, []);
+  }, [isConnected]);
 
   return (
     <FlatList

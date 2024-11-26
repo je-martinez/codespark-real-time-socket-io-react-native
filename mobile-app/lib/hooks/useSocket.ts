@@ -1,10 +1,29 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
+import { io } from 'socket.io-client';
 
 import { SocketContext } from '../store/providers';
 
 export default function useSocket() {
-  const { socket } = useContext(SocketContext);
-  const [isConnected, setIsConnected] = useState(false);
+  const { socket, setSocket } = useContext(SocketContext);
+  const [isConnected, seIsConnected] = useState<boolean>(false);
+
+  const init = () => {
+    const socket = io(process.env.EXPO_PUBLIC_API_URL, {
+      autoConnect: false,
+    });
+
+    setSocket(socket);
+
+    socket.on('connect', () => {
+      seIsConnected(true);
+    });
+
+    socket.on('disconnect', () => {
+      seIsConnected(false);
+    });
+
+    socket.connect();
+  };
 
   const registerListener = <T>(event: string, cb: (data: T) => void) => {
     if (socket) {
@@ -36,9 +55,14 @@ export default function useSocket() {
     }
   };
 
-  useEffect(() => {
-    setIsConnected(socket?.connected ?? false);
-  }, [socket?.connected]);
-
-  return { connect, disconnect, registerListener, removeAllListeners, removeListener, isConnected };
+  return {
+    socket,
+    init,
+    connect,
+    disconnect,
+    registerListener,
+    removeAllListeners,
+    removeListener,
+    isConnected,
+  };
 }
