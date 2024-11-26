@@ -3,6 +3,7 @@ import useSocket from './useSocket';
 
 export default function useChat() {
   const rooms = useAppStore((state) => state.rooms);
+  const appendNewMessage = useAppStore((state) => state.appendMessage);
   const { socket } = useSocket();
 
   const joinAllRooms = () => {
@@ -11,7 +12,7 @@ export default function useChat() {
     });
 
     socket?.on('message', (message) => {
-      console.log(message);
+      appendNewMessage(message);
     });
   };
 
@@ -21,8 +22,8 @@ export default function useChat() {
     });
   };
 
-  const sendMessage = (room: string, message: string) => {
-    socket?.emit('send_message', { room, message });
+  const sendMessage = (roomId: string, message: string) => {
+    socket?.emit('send_message', { roomId, message });
   };
 
   return { joinAllRooms, leaveAllRooms, sendMessage };

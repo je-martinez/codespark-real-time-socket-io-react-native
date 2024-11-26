@@ -1,4 +1,3 @@
-'use client';
 import React, { useCallback, useEffect } from 'react';
 import { Button, FlatList, View } from 'react-native';
 
