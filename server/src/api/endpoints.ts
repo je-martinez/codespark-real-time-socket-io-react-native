@@ -3,6 +3,12 @@ import { rooms } from "../models/rooms";
 import { users } from "../models/users";
 
 export const registerEndpoints = (app: Express) => {
+  app.get("/", (_: Request, res: Response) => {
+    res.send({
+      status: "OK",
+    });
+  });
+
   app.delete("/api/reset", (req: Request, res: Response) => {
     const apiKey = req.headers["x-api-key"];
 

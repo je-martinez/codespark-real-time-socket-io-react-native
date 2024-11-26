@@ -7,7 +7,7 @@ import { ServerType } from "../types/server";
 export const setupSocketIo = (server: ServerType) => {
   const io = new Server(server, {
     cors: {
-      origin: true,
+      origin: "*",
     },
   });
 
