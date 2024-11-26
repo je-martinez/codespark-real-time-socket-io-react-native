@@ -6,7 +6,7 @@ on:
     branches:
       - live
     paths:
-      - server/*
+      - server/**
 
 jobs:
   build:
