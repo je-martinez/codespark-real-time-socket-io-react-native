@@ -1,7 +1,12 @@
-import '../global.css';
-
 import { Stack } from 'expo-router';
 
+import { SocketProvider } from '~/lib/store/providers';
+import '../global.css';
+
 export default function Layout() {
-  return <Stack />;
+  return (
+    <SocketProvider>
+      <Stack />
+    </SocketProvider>
+  );
 }
