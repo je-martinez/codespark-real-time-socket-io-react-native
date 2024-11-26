@@ -1,9 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { SocketContext } from '../store/providers';
 
 export default function useSocket() {
   const { socket } = useContext(SocketContext);
+  const [isConnected, setIsConnected] = useState(false);
 
   const registerListener = <T>(event: string, cb: (data: T) => void) => {
     if (socket) {
@@ -35,5 +36,9 @@ export default function useSocket() {
     }
   };
 
-  return { connect, disconnect, registerListener, removeAllListeners, removeListener };
+  useEffect(() => {
+    setIsConnected(socket?.connected ?? false);
+  }, [socket?.connected]);
+
+  return { connect, disconnect, registerListener, removeAllListeners, removeListener, isConnected };
 }
