@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { Button, FlatList, View } from 'react-native';
 
+import { StatusIndicator } from './StatusIndicator';
 import { RoomItem } from './RoomItem';
 
 import { useAppStore } from '~/lib/store';
@@ -16,8 +17,13 @@ export const RoomList = () => {
 
   const renderHeader = useCallback(() => {
     return (
-      <View className="flex flex-row items-center justify-end pb-4">
-        <Button onPress={resetSession} title="Logout" />
+      <View className="flex flex-row items-center pb-4">
+        <View className="w-1/2 items-start">
+          <StatusIndicator isOnline={true} />
+        </View>
+        <View className="w-1/2 items-end">
+          <Button onPress={resetSession} title="Logout" />
+        </View>
       </View>
     );
   }, []);
