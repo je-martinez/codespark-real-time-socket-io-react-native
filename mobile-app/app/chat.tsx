@@ -11,16 +11,16 @@ import {
 } from 'react-native';
 
 import { ChatBubble, Container } from '~/components';
+import useChat from '~/lib/hooks/useChat';
 import { useAppStore } from '~/lib/store';
 import { Message } from '~/types';
-import { generateGUID } from '~/utils';
 
 export default function Chat() {
   const { id } = useLocalSearchParams();
 
   const getRoom = useAppStore((store) => store.getRoom);
   const getMessagesByRoom = useAppStore((store) => store.getMessagesByRoom);
-  const appendNewMessage = useAppStore((store) => store.appendMessage);
+  const { sendMessage } = useChat();
 
   const room = getRoom(id as string);
   const sessionId = useAppStore((store) => store.id);
@@ -29,18 +29,9 @@ export default function Chat() {
   const [input, setInput] = useState('');
   const flatListRef = useRef<FlatList<Message>>(null);
 
-  const sendMessage = () => {
+  const handleSendMessage = () => {
     if (input.trim().length > 0) {
-      const newMessage: Message = {
-        id: generateGUID(),
-        username: username ?? '',
-        userId: sessionId ?? '',
-        message: input,
-        date: new Date(),
-        roomId: id as string,
-      };
-
-      appendNewMessage(newMessage);
+      sendMessage(id as string, input);
       setInput('');
 
       setTimeout(() => {
@@ -53,7 +44,7 @@ export default function Chat() {
     <ChatBubble
       id={item.id}
       message={item.message}
-      isMe={item.userId === sessionId}
+      isMe={item.user === sessionId}
       letter={username?.charAt(0) ?? ''}
     />
   );
@@ -81,7 +72,9 @@ export default function Chat() {
             value={input}
             onChangeText={setInput}
           />
-          <TouchableOpacity className="rounded-full bg-blue-500 px-4 py-2" onPress={sendMessage}>
+          <TouchableOpacity
+            className="rounded-full bg-blue-500 px-4 py-2"
+            onPress={handleSendMessage}>
             <Text className="text-sm text-white">Enviar</Text>
           </TouchableOpacity>
         </View>
