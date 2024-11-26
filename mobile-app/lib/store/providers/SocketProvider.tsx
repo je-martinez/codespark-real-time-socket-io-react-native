@@ -3,7 +3,7 @@ import { Socket } from 'socket.io-client';
 
 interface Props extends PropsWithChildren {}
 
-const SocketContext = createContext<{
+export const SocketContext = createContext<{
   socket: Socket | undefined;
   setSocket: React.Dispatch<React.SetStateAction<Socket | undefined>>;
 }>({
