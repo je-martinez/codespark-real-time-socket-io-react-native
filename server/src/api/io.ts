@@ -60,8 +60,8 @@ export const setupSocketIo = (server: ServerType) => {
       io.to(roomId).emit("user_left", `${username} left the room.`);
     });
 
-    socket.on("send_message", (input: { message: string; room: string }) => {
-      const room = rooms.find((r) => r.id === input.room);
+    socket.on("send_message", (input: { message: string; roomId: string }) => {
+      const room = rooms.find((r) => r.id === input.roomId);
       if (!room) {
         socket.emit("error", "Room does not exist.");
         return;
@@ -72,15 +72,16 @@ export const setupSocketIo = (server: ServerType) => {
         id: createId(),
         user: username,
         message: input.message,
+        roomId: input.roomId,
         timestamp: Date.now(),
       };
       room.messages.push(message);
 
       console.log(
-        `User ${socket.id} with name ${username} sent message to room ${input.room}`
+        `User ${socket.id} with name ${username} sent message to room ${input.roomId}`
       );
 
-      io.to(input.room).emit("message", message);
+      io.to(input.roomId).emit("message", message);
     });
   });
 
