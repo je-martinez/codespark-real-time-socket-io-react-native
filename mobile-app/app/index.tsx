@@ -1,19 +1,26 @@
-import { Stack, Link } from 'expo-router';
-import React from 'react';
+import { Stack } from 'expo-router';
+import React, { useMemo } from 'react';
+import { View } from 'react-native';
 
-import { Button } from '~/components/Button';
+import { EnterUsername, RoomList } from '~/components';
 import { Container } from '~/components/Container';
-import { ScreenContent } from '~/components/ScreenContent';
+import { useAppStore } from '~/lib/store';
 
 export default function Home() {
+  const sessionId = useAppStore((store) => store.id);
+
+  const title = useMemo(() => {
+    return sessionId ? 'Home' : 'Enter Username';
+  }, [sessionId]);
+
   return (
     <>
-      <Stack.Screen options={{ title: 'Home' }} />
+      <Stack.Screen options={{ title }} />
       <Container>
-        <ScreenContent path="app/index.tsx" title="Home" />
-        <Link href={{ pathname: '/details', params: { name: 'Dan' } }} asChild>
-          <Button title="Show Details" />
-        </Link>
+        <View className="m-8 flex justify-center">
+          {!sessionId && <EnterUsername />}
+          {sessionId && <RoomList />}
+        </View>
       </Container>
     </>
   );
