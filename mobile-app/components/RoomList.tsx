@@ -21,7 +21,9 @@ export const RoomList = () => {
   }, []);
 
   useEffect(() => {
-    init(username);
+    if (!isConnected) {
+      init(username);
+    }
     return () => {
       disconnect();
     };
