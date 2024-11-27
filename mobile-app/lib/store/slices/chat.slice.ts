@@ -63,7 +63,7 @@ export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSl
       const messages = state.messages;
       return {
         ...state,
-        messages: [...messages, message],
+        messages: mergeMessages([message], messages),
       };
     }),
   addMessages: (messages) =>
