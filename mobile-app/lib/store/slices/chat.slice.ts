@@ -70,7 +70,18 @@ export const createChatSlice: StateCreator<ChatSlice & AuthSlice, [], [], ChatSl
     set((state) => {
       return {
         ...state,
-        messages,
+        messages: mergeMessages(messages, state.messages),
       };
     }),
 });
+
+export function mergeMessages(newMessages: Message[], currentMessages: Message[]): Message[] {
+  const messageMap = new Map<string, Message>();
+  currentMessages.forEach((message) => {
+    messageMap.set(message.id, message);
+  });
+  newMessages.forEach((newMessage) => {
+    messageMap.set(newMessage.id, newMessage);
+  });
+  return Array.from(messageMap.values());
+}

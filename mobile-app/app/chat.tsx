@@ -56,7 +56,7 @@ export default function Chat() {
         id={item.id}
         message={item.message}
         isMe={item.user === username}
-        letter={username?.charAt(0) ?? ''}
+        letter={item?.user?.charAt(0) ?? 'A'}
       />
     ),
     []
